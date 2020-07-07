@@ -14,12 +14,8 @@ import os
 
 options = Options()
 url = 'https://kissmanga.com/'
-save_path = r"D:\Documents\Manga"
-PATH = r"C:\Program Files (x86)\chromedriver.exe"
-
-
-# options.add_argument(r"user-data-dir=C:\Users\Johnson "
-#                     r"Vo\AppData\Local\Google\Chrome\User Data\\")
+save_path = r"save_path"
+PATH = r"chromedriver_path"
 
 
 class Download:

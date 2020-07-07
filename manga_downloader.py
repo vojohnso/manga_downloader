@@ -15,8 +15,8 @@ import os
 options = Options()
 Options.headless = True
 url = 'https://kissmanga.com/'
-save_path = r"save_path"
-PATH = r"chromedriver_path"
+save_path = r"D:\Documents\Manga"
+PATH = r"C:\Program Files (x86)\chromedriver.exe"
 
 
 class Download:
@@ -129,6 +129,7 @@ class Download:
 
     def download_chapter(self, chapter_link):
         # downloads each individual chapter
+        xpath_list = []
         img_list = []
         num = 1
         try:
@@ -145,9 +146,15 @@ class Download:
             )
         except TimeoutException:
             print("\nCouldn't load the page! Check your internet connection!")
-        for img in tqdm(
-                self.browser.find_elements_by_xpath('//div[@id="divImage'
-                                                    '"]/p/img')):
+        xpath_list = self.browser.find_elements_by_xpath('//div['
+                                                         '@id="divImage'
+                                                         '"]/p/img')
+        if not xpath_list:
+            print("Corner Case!")
+            xpath_list = self.browser.find_elements_by_xpath('//*['
+                                                            '@id="divImage'
+                                                            '"]/div/img')
+        for img in tqdm(xpath_list):
             img_list.append(img)
             url = img.get_attribute("src")
             end = url.split(".")[-1]
@@ -246,9 +253,9 @@ class Download:
 def find_chapter_number(chapter):
     text = chapter.text
     chapterRegex = re.compile(r"\d+\.?\d*")
-
+    text = text.lower()
     if "vol." in text.lower():
-        sep = re.compile(r" Vol\. \d+")
+        sep = re.compile(r" vol\. ?\d+")
         text = sep.sub("", text)
     number = chapterRegex.search(text)
     result = number.group()

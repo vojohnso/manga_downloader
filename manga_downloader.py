@@ -13,6 +13,7 @@ import requests
 import os
 
 options = Options()
+Options.headless = True
 url = 'https://kissmanga.com/'
 save_path = r"save_path"
 PATH = r"chromedriver_path"

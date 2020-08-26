@@ -26,14 +26,13 @@ def collect_chapters(manga, scraper, lang_name):
     chapter_num = []
     for chapter_id in manga["chapter"]:
         if manga["chapter"][chapter_id]["lang_name"] == lang_name:
-            chapters[chapter_id] = manga["chapter"][chapter_id]
+            if manga["chapter"][chapter_id]['chapter'] not in chapter_num:
+                chapter_num.append(manga["chapter"][chapter_id]['chapter'])
+                chapters[chapter_id] = manga["chapter"][chapter_id]
     if not chapters:
         print("There are no chapters to download.")
         exit(0)
     else:
-        for chapter_id in chapters:
-            if chapters[str(chapter_id)]['chapter'] not in chapter_num:
-                chapter_num.append(chapters[str(chapter_id)]['chapter'])
         chapter_num.sort(key=float)
         print("Chapters: ")
         print(" " + ", ".join(chapter_num))
@@ -174,6 +173,7 @@ if __name__ == "__main__":
             manga_id = re.search("\\d+", url).group()
     except:
         print("This is not a proper mangadex URL.")
+        exit(1)
     print()
     while True:
         try:
